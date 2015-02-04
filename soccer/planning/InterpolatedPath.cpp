@@ -105,7 +105,7 @@ bool Planning::InterpolatedPath::hit(const Geometry2d::CompositeShape &obstacles
     for (unsigned int i = start; i < (points.size() - 1); ++i)
     {
         //std::set<std::shared_ptr<Geometry2d::Shape> > newHit;
-        if (obstacles.hit(Geometry2d::Segment(points[i], points[i + 1]), newHit)) {
+        if (obstacles.hit(Geometry2d::Segment(points[i], points[i + 1]))) {
              return true;
         }
         //obstacles.hit(Geometry2d::Segment(points[i], points[i + 1]), newHit);
