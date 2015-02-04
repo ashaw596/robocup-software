@@ -99,21 +99,24 @@ bool Planning::InterpolatedPath::hit(const Geometry2d::CompositeShape &obstacles
     }
 
     // The set of obstacles the starting point was inside of
-    std::set<std::shared_ptr<Geometry2d::Shape> > hit;
-    obstacles.hit(points[start], hit);
+    //std::set<std::shared_ptr<Geometry2d::Shape> > hit;
+    //obstacles.hit(points[start], hit);
 
     for (unsigned int i = start; i < (points.size() - 1); ++i)
     {
-        std::set<std::shared_ptr<Geometry2d::Shape> > newHit;
-        obstacles.hit(Geometry2d::Segment(points[i], points[i + 1]), newHit);
-        try
-        {
-            set_difference(newHit.begin(), newHit.end(), hit.begin(), hit.end(), ExceptionIterator<std::shared_ptr<Geometry2d::Shape>>());
-        } catch (exception& e)
-        {
-            // Going into a new obstacle
-            return true;
+        //std::set<std::shared_ptr<Geometry2d::Shape> > newHit;
+        if (obstacles.hit(Geometry2d::Segment(points[i], points[i + 1]), newHit)) {
+             return true;
         }
+        //obstacles.hit(Geometry2d::Segment(points[i], points[i + 1]), newHit);
+        //try
+        //{
+        //    set_difference(newHit.begin(), newHit.end(), hit.begin(), hit.end(), ExceptionIterator<std::shared_ptr<Geometry2d::Shape>>());
+        //} catch (exception& e)
+        //{
+            // Going into a new obstacle
+        //    return true;
+        //}
     }
 
     // Didn't hit anything or never left any obstacle

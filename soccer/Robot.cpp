@@ -250,8 +250,6 @@ void OurRobot::move(const Geometry2d::Point &goal, float endSpeed)
 	 	} else {
 	 		addText("Old goal was null");
 	 	}
-
-	 	_motionConstraints.targetPos = goal;
 	 	_pathInvalidated = true;
 	}
 
