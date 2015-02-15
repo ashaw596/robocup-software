@@ -239,7 +239,7 @@ void RRTPlanner::optimize(Planning::InterpolatedPath &path, const Geometry2d::Co
 	//quarticBezier(path, obstacles);
 	path.maxSpeed = _motionConstraints.maxSpeed;
 	path.endSpeed = _motionConstraints.endSpeed;
-	path.maxAcceleration = _motionConstraints.maxAcceleration;
+	path.maxAcceleration = _motionConstraints.maxAcceleration*.9;
 	cubicBezier(path, obstacles);
 }
 
@@ -278,12 +278,59 @@ void RRTPlanner::cubicBezier (Planning::InterpolatedPath &path, const Geometry2d
 	for (int i=0; i<curvesNum; i++) {
 		ks[i] = 1.0/(path.getTime(i+1)-path.getTime(i));
 		ks2[i] = ks[i]*ks[i];
+
+		
+
+	}
+	int giveup = 0;
+	bool shouldTryAgain = true;
+	VectorXd solutionX;
+	VectorXd solutionY;
+	while (shouldTryAgain&&giveup<10) {
+
+		solutionX = cubicBezierCalc(vi.x, vf.x, pointsX, ks, ks2);
+		solutionY = cubicBezierCalc(vi.y, vf.y, pointsY, ks, ks2);
+		shouldTryAgain = false;
+		
+		for (int i=0; i<curvesNum; i++) // access by reference to avoid copying
+	    {
+
+	    	Geometry2d::Point p0 = path.points[i];
+	    	Geometry2d::Point p3 = path.points[i+1];
+	    	Geometry2d::Point p1 = Geometry2d::Point(solutionX(i*2),solutionY(i*2));
+	    	Geometry2d::Point p2 = Geometry2d::Point(solutionX(i*2 + 1),solutionY(i*2 + 1));
+	    	
+	    	float k = ks[i];
+			float k2 = ks2[i];
+			float k3 = k2*k;
+			Geometry2d::Point accel0 = 6*k2*(p0-2*p1+p2);
+			Geometry2d::Point accel1 = accel0 + k2 * (-6*p0 + 18*p1 + 6*p3 - 18*p2);
+			if (max(max(abs(accel0.x),abs(accel0.y)),max(abs(accel1.x),abs(accel1.y)))>_motionConstraints.maxAcceleration) {
+				float decay = 0.9;
+				ks2[i] = ks[i]*ks[i];
+				ks[i]*=decay;
+				if (i!=0) {
+					ks[i-1]*=decay;
+					ks2[i-1] = ks[i-1]*ks[i-1];
+				}
+				if (i!=curvesNum-1) {
+					ks[i+1]*=decay;
+					ks2[i+1] = ks[i+1]*ks[i+1];
+				}
+				
+				printf("meh");
+				shouldTryAgain = true;
+				giveup++;
+			}
+		}
+
+	}
+	if (giveup==10){
+		printf("i give up");
+	} else if (giveup>0) {
+		printf("success");
 	}
 
-	VectorXd solutionX = cubicBezierCalc(vi.x, vf.x, pointsX, ks, ks2);
-	VectorXd solutionY = cubicBezierCalc(vi.y, vf.y, pointsY, ks, ks2);
-
-	Geometry2d::Point p0, p1, p2, p3;
 	vector<Geometry2d::Point> pts;
 	vector<Geometry2d::Point> vels;
 	vector<float> times;
@@ -292,10 +339,10 @@ void RRTPlanner::cubicBezier (Planning::InterpolatedPath &path, const Geometry2d
 
 	for (int i=0; i<curvesNum; i++) // access by reference to avoid copying
     {
-    	p0 = path.points[i];
-    	p3 = path.points[i+1];
-    	p1 = Geometry2d::Point(solutionX(i*2),solutionY(i*2));
-    	p2 = Geometry2d::Point(solutionX(i*2 + 1),solutionY(i*2 + 1));
+    	Geometry2d::Point p0 = path.points[i];
+    	Geometry2d::Point p3 = path.points[i+1];
+    	Geometry2d::Point p1 = Geometry2d::Point(solutionX(i*2),solutionY(i*2));
+    	Geometry2d::Point p2 = Geometry2d::Point(solutionX(i*2 + 1),solutionY(i*2 + 1));
 
     	for (int j=0; j<interpolations; j++)
     	{
@@ -322,8 +369,8 @@ void RRTPlanner::cubicBezier (Planning::InterpolatedPath &path, const Geometry2d
     path.times = times;
 }
 
-VectorXd RRTPlanner::cubicBezierCalc (double vi, double vf, vector<double> &points,
-									vector<double> &ks, vector<double> &ks2)
+VectorXd RRTPlanner::cubicBezierCalc (double vi, double vf, const vector<double> &points,
+									vector<double> &ks, const vector<double> &ks2)
 {
 	int curvesNum = points.size() - 1;
 

@@ -86,7 +86,7 @@ namespace Planning
 		 * Helper function for cubicBezier() which uses Eigen matrices to solve for the
 		 * cubic bezier equations.
 		 */
-		Eigen::VectorXd cubicBezierCalc (double vi, double vf, std::vector<double> &points,
-									std::vector<double> &ks, std::vector<double> &ks2);
+		Eigen::VectorXd cubicBezierCalc (double vi, double vf, const std::vector<double> &points,
+									std::vector<double> &ks, const std::vector<double> &ks2);
 	};
 }
