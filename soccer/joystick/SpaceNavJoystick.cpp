@@ -39,7 +39,7 @@ void SpaceNavJoystick::update() {
 
             //  spacenav x is side-to-side and z is forward-to-backward strafe/translate
             //  translation starts out as a normalized value from (-1,-1) to (1,1)
-            _controlValues.translation = Geometry2d::Point(sev.motion.x / 350.0, sev.motion.z / 350.0);
+            _controlValues.translation = Geometry2d::Point(sev.motion.x/ 350.0, sev.motion.z / 350.0);
 
             //  create a mouse deadzone - this keeps the robot from moving if the joystick is shifted just ever so slightly
             if (_controlValues.translation.mag() < 0.05) {

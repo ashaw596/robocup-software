@@ -236,7 +236,7 @@ void OurRobot::move(const Geometry2d::Point &goal, float endSpeed)
 		return;
 
 	// sets flags for future movement
-	if (verbose) cout << " in OurRobot::move(goal): adding a goal (" << goal.x << ", " << goal.y << ")" << std::endl;
+	if (verbose) cout << " in OurRobot::move(goal): adding a goal (" << goal.x() << ", " << goal.y() << ")" << std::endl;
 	
 	_motionConstraints.targetPos = goal;
 	_motionConstraints.endSpeed = endSpeed;
@@ -260,7 +260,7 @@ void OurRobot::move(const Geometry2d::Point &goal, float endSpeed)
 	// 	_pathInvalidated = true;
 	// }
 
-	*_cmdText << "move(" << goal.x << ", " << goal.y << ")\n";
+	*_cmdText << "move(" << goal.x() << ", " << goal.y() << ")\n";
 	if (endSpeed != 0) {
 		*_cmdText << "setEndSpeed(" << endSpeed << ")\n";
 	}
@@ -273,7 +273,7 @@ void OurRobot::worldVelocity(const Geometry2d::Point& v)
 
 	_path.reset();
 
-	*_cmdText << "worldVel(" << v.x << ", " << v.y << ")\n";
+	*_cmdText << "worldVel(" << v.x() << ", " << v.y() << ")\n";
 }
 
 void OurRobot::pivot(const Geometry2d::Point &pivotTarget) {
@@ -284,7 +284,7 @@ void OurRobot::pivot(const Geometry2d::Point &pivotTarget) {
 	_motionConstraints.targetWorldVel = boost::none;
 	_motionConstraints.faceTarget = boost::none;
 
-	*_cmdText << "pivot(" << pivotTarget.x << ", " << pivotTarget.y << ")\n";
+	*_cmdText << "pivot(" << pivotTarget.x() << ", " << pivotTarget.y() << ")\n";
 }
 
 Geometry2d::Point OurRobot::pointInRobotSpace(const Geometry2d::Point& pt) const {
@@ -304,7 +304,7 @@ const Geometry2d::Segment OurRobot::kickerBar() const {
 
 bool OurRobot::behindBall(const Geometry2d::Point& ballPos) const {
 	Point ballTransformed = pointInRobotSpace(ballPos);
-	return ballTransformed.x < -Robot_Radius;
+	return ballTransformed.x() < -Robot_Radius;
 }
 
 float OurRobot::kickTimer() const {
@@ -326,7 +326,7 @@ void OurRobot::face(const Geometry2d::Point &pt)
 	//	reset conflicting motion commands
 	_motionConstraints.pivotTarget = boost::none;
 
-	*_cmdText << "face(" << pt.x << ", " << pt.y << ")\n";
+	*_cmdText << "face(" << pt.x() << ", " << pt.y() << ")\n";
 }
 
 void OurRobot::faceNone()
@@ -629,7 +629,7 @@ void OurRobot::replanIfNeeded(const Geometry2d::CompositeShape& global_obstacles
 		_path->evaluate(timeIntoPath, targetPathPos, targetVel);
 		float pathError = (targetPathPos - pos).mag();
 		//state()->drawCircle(targetPathPos, maxDist, Qt::green, "MotionControl");
-		addText(QString("velocity: %1 %2").arg(this->vel.x).arg(this->vel.y));
+		addText(QString("velocity: %1 %2").arg(this->vel.x()).arg(this->vel.y()));
 		addText(QString("%1").arg(pathError));
 		if (pathError > maxDist) {
 			_pathInvalidated = true;

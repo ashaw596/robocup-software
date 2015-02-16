@@ -250,7 +250,7 @@ void RRTPlanner::optimize(Planning::Path &path, const Geometry2d::CompositeShape
 
 Geometry2d::Point pow(Geometry2d::Point &p1, float i)
 {
-	return Geometry2d::Point(pow(p1.x, i), pow(p1.y, i));
+	return Geometry2d::Point(pow(p1.x(), i), pow(p1.y(), i));
 }
 
 using namespace Eigen;
@@ -277,16 +277,16 @@ void RRTPlanner::cubicBezier (Planning::Path &path, const Geometry2d::CompositeS
 	
 	
 	for (int i=0; i<length; i++) {
-		pointsX[i] = path.points[i].x;
-		pointsY[i] = path.points[i].y;
+		pointsX[i] = path.points[i].x();
+		pointsY[i] = path.points[i].y();
 	}
 	for (int i=0; i<curvesNum; i++) {
 		ks[i] = 1.0/(path.getTime(i+1)-path.getTime(i));
 		ks2[i] = ks[i]*ks[i];
 	}
 	
-	VectorXd solutionX = cubicBezierCalc(vi.x, vf.x, pointsX, ks, ks2);
-	VectorXd solutionY = cubicBezierCalc(vi.y, vf.y, pointsY, ks, ks2);
+	VectorXd solutionX = cubicBezierCalc(vi.x(), vf.x(), pointsX, ks, ks2);
+	VectorXd solutionY = cubicBezierCalc(vi.y(), vf.y(), pointsY, ks, ks2);
 	
 	Geometry2d::Point p0, p1, p2, p3;
 	vector<Geometry2d::Point> pts;

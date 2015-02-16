@@ -9,10 +9,10 @@ Rect Segment::bbox() const
 {
 	Rect bbox;
 
-	bbox.pt[0].x = min(pt[0].x, pt[1].x);
-	bbox.pt[0].y = min(pt[0].y, pt[1].y);
-	bbox.pt[1].x = max(pt[0].x, pt[1].x);
-	bbox.pt[1].y = max(pt[0].y, pt[1].y);
+	bbox.pt[0].x() = min(pt[0].x(), pt[1].x());
+	bbox.pt[0].y() = min(pt[0].y(), pt[1].y());
+	bbox.pt[1].x() = max(pt[0].x(), pt[1].x());
+	bbox.pt[1].y() = max(pt[0].y(), pt[1].y());
 
 	return bbox;
 }
@@ -46,14 +46,14 @@ bool Segment::intersects(const Segment &other, Point *intr) const
 	// From Mathworld:
 	//	http://mathworld.wolfram.com/Line2d-Line2dIntersection.html
 
-	float x1 = pt[0].x;
-	float y1 = pt[0].y;
-	float x2 = pt[1].x;
-	float y2 = pt[1].y;
-	float x3 = other.pt[0].x;
-	float y3 = other.pt[0].y;
-	float x4 = other.pt[1].x;
-	float y4 = other.pt[1].y;
+	float x1 = pt[0].x();
+	float y1 = pt[0].y();
+	float x2 = pt[1].x();
+	float y2 = pt[1].y();
+	float x3 = other.pt[0].x();
+	float y3 = other.pt[0].y();
+	float x4 = other.pt[1].x();
+	float y4 = other.pt[1].y();
 
 	float denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 	if (denom == 0)
@@ -82,8 +82,8 @@ bool Segment::intersects(const Segment &other, Point *intr) const
 
 	if (intr)
 	{
-		intr->x = ix;
-		intr->y = iy;
+		intr->x() = ix;
+		intr->y() = iy;
 	}
 
 	return true;
@@ -101,10 +101,10 @@ std::shared_ptr<Point> Segment::intersection(const Segment &other) {
 
 bool Segment::intersects(const Circle& circle) const
 {
-	Point pCir(circle.center.x, circle.center.y);
+	Point pCir(circle.center.x(), circle.center.y());
 	Point delta = pt[1] - pt[0];
 	
-	float top = delta.x * (pCir.x - pt[0].x) + (pCir.y - pt[0].y) * delta.y;
+	float top = delta.x() * (pCir.x() - pt[0].x()) + (pCir.y() - pt[0].y()) * delta.y();
 	
 	float u = fabs(top)/delta.magsq();
 	
@@ -126,7 +126,7 @@ bool Segment::nearPoint(const Point &point, float threshold) const
 	const Point &p2 = pt[1];
 	
 	Point delta = p2 - p1;
-	float top = delta.x * (p1.y - point.y) - (p1.x - point.x) * delta.y;
+	float top = delta.x() * (p1.y() - point.y()) - (p1.x() - point.x()) * delta.y();
 	float delta_magsq = delta.magsq();
 	float dist = fabs(top) / sqrtf(delta_magsq);
 
@@ -149,7 +149,7 @@ bool Segment::nearPoint(const Point &point, float threshold) const
 	// Calculate the position between the endpoints of the point on
 	// the line nearest this point.
 	// In the result (d), p1 maps to 0 and p2 maps to 1.
-	float d = (d1.x * delta.x + d1.y * delta.y) / delta_magsq;
+	float d = (d1.x() * delta.x() + d1.y() * delta.y()) / delta_magsq;
 
 	return d >= 0 && d <= 1;
 }
@@ -159,7 +159,7 @@ bool Segment::nearPointPerp(const Point &point, float threshold) const {
 	const Point &p2 = pt[1];
 
 	Point delta = p2 - p1;
-	float top = delta.x * (p1.y - point.y) - (p1.x - point.x) * delta.y;
+	float top = delta.x() * (p1.y() - point.y()) - (p1.x() - point.x()) * delta.y();
 	float delta_magsq = delta.magsq();
 	float dist = fabs(top) / sqrtf(delta_magsq);
 
@@ -174,7 +174,7 @@ bool Segment::nearPointPerp(const Point &point, float threshold) const {
 	// Calculate the position between the endpoints of the point on
 	// the line nearest this point.
 	// In the result (d), p1 maps to 0 and p2 maps to 1.
-	float d = (d1.x * delta.x + d1.y * delta.y) / delta_magsq;
+	float d = (d1.x() * delta.x() + d1.y() * delta.y()) / delta_magsq;
 
 	return d >= 0 && d <= 1;
 }

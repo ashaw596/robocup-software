@@ -24,8 +24,8 @@ namespace Geometry2d
 			*/
 			Point()
 			{
-				x = (operator(0));
-				y = (operator(1));
+				x() = 0;
+				y() = 1;
 			}
 
 			/**
@@ -37,29 +37,29 @@ namespace Geometry2d
 			*/
 			Point(float x, float y)
 			{
-				this->x = x;
-				this->y = y;
+				this->x() = x;
+				this->y() = y;
 			}
 			
 			template<class T>
 			Point(const T &other)
 			{
-				x = other.x();
-				y = other.y();
+				x() = other.x();
+				y() = other.y();
 			}
 			/**
 			 * to draw stuff and interface with QT
 			 */
 			QPointF toQPointF() const
 			{
-				return QPointF(x, y);
+				return QPointF(x(), y());
 			}
 			
 			operator Packet::Point() const
 			{
 				Packet::Point out;
-				out.set_x(x);
-				out.set_y(y);
+				out.set_x(x());
+				out.set_y(y());
 				return out;
 			}
 			/**
@@ -68,7 +68,7 @@ namespace Geometry2d
 			 */
 			Point operator+(Point other) const
 			{
-				return Point(x + other.x, y + other.y);
+				return Point(x() + other.x(), y() + other.y());
 			}
 
 			/**
@@ -78,7 +78,7 @@ namespace Geometry2d
 			 */
 			Point operator/(Point other) const
 			{
-				return Point(x / other.x, y / other.y);
+				return Point(x() / other.x(), y() / other.y());
 			}
 
 
@@ -89,7 +89,7 @@ namespace Geometry2d
 			 */
 			Point operator-(Point other) const
 			{
-				return Point(x - other.x, y - other.y);
+				return Point(x() - other.x(), y() - other.y());
 			}
 
 			/**
@@ -97,7 +97,7 @@ namespace Geometry2d
 			 */
 			Point operator-() const
 			{
-				return Point(-x, -y);
+				return Point(-x(), -y());
 			}
 
 			/**
@@ -106,8 +106,8 @@ namespace Geometry2d
 			 */
 			Point &operator+=(Point other)
 			{
-				x += other.x;
-				y += other.y;
+				x() += other.x();
+				y() += other.y();
 
 				return *this;
 			}
@@ -118,8 +118,8 @@ namespace Geometry2d
 			 */
 			Point &operator-=(Point other)
 			{
-				x -= other.x;
-				y -= other.y;
+				x() -= other.x();
+				y() -= other.y();
 
 				return *this;
 			}
@@ -130,8 +130,8 @@ namespace Geometry2d
 			 */
 			Point &operator*=(float s)
 			{
-				x *= s;
-				y *= s;
+				x() *= s;
+				y() *= s;
 
 				return *this;
 			}
@@ -142,8 +142,8 @@ namespace Geometry2d
 			 */
 			Point &operator/=(float s)
 			{
-				x /= s;
-				y /= s;
+				x() /= s;
+				y() /= s;
 
 				return *this;
 			}
@@ -154,7 +154,7 @@ namespace Geometry2d
 			 */
 			Point operator/(float s) const
 			{
-				return Point(x / s, y / s);
+				return Point(x() / s, y() / s);
 			}
 			/**
 			 * adds the * operator for vectors
@@ -162,7 +162,7 @@ namespace Geometry2d
 			 */
 			Point operator*(float s) const
 			{
-				return Point(x * s, y * s);
+				return Point(x() * s, y() * s);
 			}
 
 			/**
@@ -171,7 +171,7 @@ namespace Geometry2d
 			 */
 			bool operator==(Point other) const
 			{
-				return x == other.x && y == other.y;
+				return x() == other.x() && y() == other.y();
 			}
 			
 			/**
@@ -179,7 +179,7 @@ namespace Geometry2d
 			 */
 			bool operator!=(Point other) const
 			{
-				return x != other.x || y != other.y;
+				return x() != other.x() || y() != other.y();
 			}
 			
 			/**
@@ -190,7 +190,7 @@ namespace Geometry2d
 			*/
 			float dot(Point p) const
 			{
-				return x * p.x + y * p.y;
+				return x() * p.x() + y() * p.y();
 			}
 			
 			/**
@@ -199,7 +199,7 @@ namespace Geometry2d
 			*/
 			bool isZero() const
 			{
-				return x == 0 && y == 0;
+				return x() == 0 && y() == 0;
 			}
 			
 			/**
@@ -208,7 +208,7 @@ namespace Geometry2d
 			*/
 			float mag() const
 			{
-				return sqrtf(x * x + y * y);
+				return sqrtf(x() * x() + y() * y());
 			}
 			
 			/**
@@ -218,7 +218,7 @@ namespace Geometry2d
 			*/
 			float magsq() const
 			{
-				return x * x + y * y;
+				return x() * x() + y() * y();
 			}
 
 			/**
@@ -229,8 +229,8 @@ namespace Geometry2d
 			{	
 				if (mag() > max) {
 					float ratio = mag() / max;
-					x = x / ratio;
-					y = y / ratio;
+					x() = x() / ratio;
+					y() = y() / ratio;
 				}
 			}
 			
@@ -251,10 +251,10 @@ namespace Geometry2d
 			*/
 			void rotate(float angle)
 			{
-				float newX = x * std::cos(angle) - y * std::sin(angle);
-				float newY = y * std::cos(angle) + x * std::sin(angle);
-				x = newX;
-				y = newY;
+				float newX = x() * std::cos(angle) - y() * std::sin(angle);
+				float newY = y() * std::cos(angle) + x() * std::sin(angle);
+				x() = newX;
+				y() = newY;
 			}
 			
 			/**
@@ -262,8 +262,8 @@ namespace Geometry2d
 			 */
 			Point rotated(float angle) const
 			{
-				float newX = x * std::cos(angle) - y * std::sin(angle);
-				float newY = y * std::cos(angle) + x * std::sin(angle);
+				float newX = x() * std::cos(angle) - y() * std::sin(angle);
+				float newY = y() * std::cos(angle) + x() * std::sin(angle);
 				return Point(newX, newY);
 			}
 
@@ -300,7 +300,7 @@ namespace Geometry2d
 					return Point(0, 0);
 				}
 				
-				return Point(x / m , y / m);
+				return Point(x() / m , y() / m);
 			}
 			
 			/**
@@ -316,7 +316,7 @@ namespace Geometry2d
 			*/
 			float angle() const
 			{
-				return atan2(y, x);
+				return atan2(y(), x());
 			}
 			
 			/**
@@ -330,13 +330,13 @@ namespace Geometry2d
 			/** returns the perpendicular to the point, Clockwise */
 			Point perpCW() const
 			{
-				return Point(y, -x);
+				return Point(y(), -x());
 			}
 			
 			/** returns the perpendicular to the point, Counter Clockwise */
 			Point perpCCW() const
 			{
-				return Point(-y, x);
+				return Point(-y(), x());
 			}
 			
 			/** saturates the magnitude of a vector */
@@ -357,13 +357,13 @@ namespace Geometry2d
 			
 			float cross(const Point &other) const
 			{
-				return x * other.y - y * other.x;
+				return x() * other.y() - y() * other.x();
 			}
 			
 			std::string toString()
 			{
 				std::stringstream str;
-				str << "Point(" << x << ", " << y << ")";
+				str << "Point(" << x() << ", " << y() << ")";
 				return str.str();
 			}
 
@@ -372,11 +372,41 @@ namespace Geometry2d
 				return stream;
 			}
 
+
 			/** the x coordinate */
-			float &x;
-			
+			inline float& x() {
+				return operator()(0);
+			}
+
+			float getX() const {
+				return operator()(0);
+			}
+			void setX(float x) {
+				operator()(0) = x; 
+			}
+
+			inline const float& x() const 
+			{
+				return operator()(0);
+			}
+
+	
 			/** the y coordinate */
-			float &y;
+			inline float& y() {
+				return operator()(1);
+			}
+
+			float getY() const {
+				return operator()(1);
+			}
+			void setY(float y) {
+				operator()(1) = y;
+			}
+
+			inline const float& y() const
+			{
+				return operator()(1);
+			}
 	}; // \class Point
 
 	// global operations
@@ -387,6 +417,6 @@ namespace Geometry2d
 	 */
 	inline Point operator*(const float& s, const Point& pt)
 	{
-		return Point(pt.x * s, pt.y * s);
+		return Point(pt.x() * s, pt.y() * s);
 	}
 }

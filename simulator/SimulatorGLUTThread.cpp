@@ -406,7 +406,7 @@ void SimulatorGLUTThread::showVehicleInfo(int& xOffset,int& yStart, int yIncr)
 
 	if(DisplayMotion)
 	{
-		sprintf(robotText,"linear velocity = (%+7.5f,%+7.5f)",_vehicle->getVelFS().x, _vehicle->getVelFS().y);
+		sprintf(robotText,"linear velocity = (%+7.5f,%+7.5f)",_vehicle->getVelFS().x(), _vehicle->getVelFS().y());
 		displayProfileString(xOffset,yStart,robotText);
 		yStart += yIncr;
 
@@ -421,7 +421,7 @@ void SimulatorGLUTThread::showVehicleInfo(int& xOffset,int& yStart, int yIncr)
 		displayProfileString(xOffset,yStart,robotText);
 		yStart += yIncr;*/
 
-		sprintf(robotText,"target linear = (% 7.5f,% 7.5f)",_vehicle->getTargetVelFS().x, _vehicle->getTargetVelFS().y);
+		sprintf(robotText,"target linear = (% 7.5f,% 7.5f)",_vehicle->getTargetVelFS().x(), _vehicle->getTargetVelFS().y());
 		displayProfileString(xOffset,yStart,robotText);
 		yStart += yIncr;
 

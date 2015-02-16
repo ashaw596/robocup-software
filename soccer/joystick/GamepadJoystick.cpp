@@ -233,26 +233,26 @@ JoystickControlValues GamepadJoystick::getJoystickControlValues()
 
     if (dUp())
     {
-        input.y = mVal;
-        input.x = 0;
+        input.y() = mVal;
+        input.x() = 0;
     }
     else if (dDown())
     {
-        input.y = -mVal;
-        input.x = 0;
+        input.y() = -mVal;
+        input.x() = 0;
     }
     else if (dRight())
     {
-        input.y = 0;
-        input.x = mVal;
+        input.y() = 0;
+        input.x() = mVal;
     }
     else if (dLeft())
     {
-        input.y = 0;
-        input.x = -mVal;
+        input.y() = 0;
+        input.x() = -mVal;
     }
 
-    vals.translation = Geometry2d::Point(input.x, input.y);
+    vals.translation = Geometry2d::Point(input.x(), input.y());
 
     vals.rotation = -leftX;
 

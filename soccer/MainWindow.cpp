@@ -202,8 +202,8 @@ void MainWindow::updateViews()
 	}
 	if(manual >= 0) {
 		JoystickControlValues vals = _processor->getJoystickControlValues();
-		_ui.joystickBodyXLabel->setText(tr("%1").arg(vals.translation.x));
-		_ui.joystickBodyYLabel->setText(tr("%1").arg(vals.translation.y));
+		_ui.joystickBodyXLabel->setText(tr("%1").arg(vals.translation.x()));
+		_ui.joystickBodyYLabel->setText(tr("%1").arg(vals.translation.y()));
 		_ui.joystickBodyWLabel->setText(tr("%1").arg(vals.rotation));
 		_ui.joystickKickPowerLabel->setText(tr("%1").arg(vals.kickPower));
 		_ui.joystickDibblerPowerLabel->setText(tr("%1").arg(vals.dribblerPower));

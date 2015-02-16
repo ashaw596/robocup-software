@@ -29,25 +29,25 @@ bool Rect::contains(const Point &point) const
 {
 	float minx, miny, maxx, maxy;
 
-	if (pt[0].x < pt[1].x)
+	if (pt[0].x() < pt[1].x())
 	{
-		minx = pt[0].x;
-		maxx = pt[1].x;
+		minx = pt[0].x();
+		maxx = pt[1].x();
 	} else {
-		minx = pt[1].x;
-		maxx = pt[0].x;
+		minx = pt[1].x();
+		maxx = pt[0].x();
 	}
 
-	if (pt[0].y < pt[1].y)
+	if (pt[0].y() < pt[1].y())
 	{
-		miny = pt[0].y;
-		maxy = pt[1].y;
+		miny = pt[0].y();
+		maxy = pt[1].y();
 	} else {
-		miny = pt[1].y;
-		maxy = pt[0].y;
+		miny = pt[1].y();
+		maxy = pt[0].y();
 	}
 	
-	return point.x >= minx && point.x <= maxx && point.y >= miny && point.y <= maxy;
+	return point.x() >= minx && point.x() <= maxx && point.y() >= miny && point.y() <= maxy;
 }
 
 bool Rect::hit(const Segment &seg) const {
@@ -61,10 +61,10 @@ bool Rect::hit(const Segment &seg) const {
 
 void Rect::expand(const Point &p)
 {
-	pt[0].x = min(pt[0].x, p.x);
-	pt[0].y = min(pt[0].y, p.y);
-	pt[1].x = max(pt[1].x, p.x);
-	pt[1].y = max(pt[1].y, p.y);
+	pt[0].x() = min(pt[0].x(), p.x());
+	pt[0].y() = min(pt[0].y(), p.y());
+	pt[1].x() = max(pt[1].x(), p.x());
+	pt[1].y() = max(pt[1].y(), p.y());
 }
 
 void Rect::expand(const Rect &rect)
@@ -90,8 +90,8 @@ bool Rect::nearSegment(const Segment &seg, float threshold) const
 
 	// If any corner of this rect is near the segment,
 	// then the segment is near this rect.
-	Point ur = Point(pt[1].x, pt[0].y);
-	Point ll = Point(pt[0].x, pt[1].y);
+	Point ur = Point(pt[1].x(), pt[0].y());
+	Point ll = Point(pt[0].x(), pt[1].y());
 	if (seg.nearPoint(pt[0], threshold)
 		   || seg.nearPoint(ur, threshold)
 		   || seg.nearPoint(ll, threshold)
@@ -136,8 +136,8 @@ bool Rect::nearPoint(const Point &other, float threshold) const
 	if (this->contains(other))
 		return true;
 
-	Point ur = Point(pt[1].x, pt[0].y);
-	Point ll = Point(pt[0].x, pt[1].y);
+	Point ur = Point(pt[1].x(), pt[0].y());
+	Point ll = Point(pt[0].x(), pt[1].y());
 	Segment edge[4] = {
 		Segment(pt[0], ur),
 		Segment(ur, pt[1]),
