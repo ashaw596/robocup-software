@@ -1,7 +1,7 @@
-MAKE_FLAGS=--no-print-directory
+MAKE_FLAGS=--no-print-directory 
 all:
 	mkdir -p build
-	cd build; cmake .. -Wno-dev && make $(MAKE_FLAGS)
+	cd build; cmake .. -Wno-dev -GNinja && ninja 
 
 run: all
 	cd run; ./soccer

@@ -46,6 +46,17 @@ void MotionControl::run() {
 	const MotionConstraints &constraints = _robot->motionConstraints();
 
 	//	update PID parameters
+
+	_velocityXController.kp = *_robot->config->velocity.p;
+	_velocityXController.ki = *_robot->config->velocity.i;
+	_velocityXController.setWindup(*_robot->config->velocity.i_windup);
+	_velocityXController.kd = *_robot->config->velocity.d;
+
+	_velocityYController.kp = *_robot->config->velocity.p;
+	_velocityYController.ki = *_robot->config->velocity.i;
+	_velocityYController.setWindup(*_robot->config->velocity.i_windup);
+	_velocityYController.kd = *_robot->config->velocity.d;
+
 	_positionXController.kp = *_robot->config->translation.p;
 	_positionXController.ki = *_robot->config->translation.i;
 	_positionXController.setWindup(*_robot->config->translation.i_windup);
@@ -213,9 +224,16 @@ void MotionControl::run() {
 		_robot->state()->drawLine(targetPos, targetPos + targetVel, Qt::blue, "velocity");
 		_robot->state()->drawText(QString("%1").arg(timeIntoPath), targetPos, Qt::black, "time");
 
+
+
+		
 		//	convert from world to body coordinates
 		targetVel = targetVel.rotated(-_robot->angle);
 	}
+
+	Point velError = _lastVelCmd - _robot->vel.rotated(-_robot->angle);
+	//targetVel.x += _velocityXController.run(velError.x);
+	//targetVel.y += _velocityYController.run(velError.y);
 
 	this->_targetBodyVel(targetVel);
 }

@@ -166,11 +166,16 @@ void RRTPlanner::makePath()
 	//add the goal tree in reverse
 	//aka p1 to root
 	_fixedStepTree1.addPath(newPath, p1, true);
-	newPath.vi = vi;
+
+	//newPath.vi = vi;
+	//newPath.maxSpeed = _motionConstraints.maxSpeed;
+	//newPath.endSpeed = _motionConstraints.endSpeed;
+	//newPath.maxAcceleration = _motionConstraints.maxAcceleration;
+	//cubicBezier(newPath, _obstacles);
 	optimize(newPath, _obstacles);
 
 	/// check the path against the old one
-	bool hit = (_obstacles) ? _bestPath.hit(*_obstacles) : false;
+	//bool hit = (_obstacles) ? _bestPath.hit(*_obstacles) : false;
 
 	//TODO evaluate the old path based on the closest segment
 	//and the distance to the endpoint of that segment
@@ -188,7 +193,7 @@ void RRTPlanner::makePath()
 	//		(_bestPath.points.back() != _fixedStepTree1.start()->pos) ||
 	//		(newPath.length() < _bestPath.length()))
 	//{
-		_bestPath = newPath;
+	_bestPath = newPath;
 	//	return;
 	//}
 	/*
@@ -201,8 +206,6 @@ void RRTPlanner::makePath()
 
 void RRTPlanner::optimize(Planning::InterpolatedPath &path, const Geometry2d::CompositeShape *obstacles)
 {
-	unsigned int start = 0;
-
 	if (path.empty())
 	{
 		// Nothing to do
@@ -214,31 +217,29 @@ void RRTPlanner::optimize(Planning::InterpolatedPath &path, const Geometry2d::Co
 
 	// Copy all points that won't be optimized
 	vector<Geometry2d::Point>::const_iterator begin = path.points.begin();
-	pts.insert(pts.end(), begin, begin + start);
+	pts.insert(pts.end(), begin, begin + 0);
+	int last = 0;
+	pts.push_back(path.points[0]);
 
-	// The set of obstacles the starting point was inside of
-	std::set<shared_ptr<Geometry2d::Shape> > hit;
-
-	again:
-	obstacles->hit(path.points[start], hit);
-	pts.push_back(path.points[start]);
-	// [start, start + 1] is guaranteed not to have a collision because it's already in the path.
-	for (unsigned int end = start + 2; end < path.points.size(); ++end)
-	{
-		std::set<shared_ptr<Geometry2d::Shape> > newHit;
-		obstacles->hit(Geometry2d::Segment(path.points[start], path.points[end]), newHit);
-		try
-		{
-			set_difference(newHit.begin(), newHit.end(), hit.begin(), hit.end(), ExceptionIterator<std::shared_ptr<Geometry2d::Shape>>());
-		} catch (exception& e)
-		{
-			start = end - 1;
-			goto again;
+	for (int index = 2; index < path.points.size(); index++) {
+		while(index < path.points.size() && !obstacles->hit(Geometry2d::Segment(path.points[last], path.points[index]))) {
+			index++;
 		}
+		index--;
+		if(last==index) {
+			index++;
+		}
+		pts.push_back(path.points[index]);
+		last = index;
+		index+=2;
 	}
-	// Done with the path
-	pts.push_back(path.points.back());
+
+	cout<<path.points.size()<<"test"<< pts.size()<<endl;
 	path.points = pts;
+
+
+
+
 	//quarticBezier(path, obstacles);
 	path.maxSpeed = _motionConstraints.maxSpeed;
 	path.endSpeed = _motionConstraints.endSpeed;
