@@ -282,6 +282,7 @@ bool Planning::InterpolatedPath::getPoint(float distance ,Geometry2d::Point &pos
 	return false;
 
 }
+
 void Planning::InterpolatedPath::draw(SystemState * const state, const QColor &col = Qt::black, const QString &layer = "Motion") const {
 	Packet::DebugPath *dbg = state->logFrame->add_debug_paths();
 	dbg->set_layer(state->findDebugLayer(layer));
