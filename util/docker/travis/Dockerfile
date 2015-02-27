@@ -1,8 +1,9 @@
+
 # Use phusion/baseimage if problems arise
 FROM ubuntu:14.04
 MAINTAINER Jay Kamat
 
-# This dockerimage will allow us to run our travis CI builds in docker! We should probably make a baseimage (perhaps the existing robocup-baseimage?)for this to speed up our compiles dramatically
+# This dockerimage will serve as a 'static' base for the robocup dockerimage to reduce build time
 
 # Setup apt to be happy with no console input
 ENV DEBIAN_FRONTEND noninteractive
@@ -10,25 +11,41 @@ ENV DEBIAN_FRONTEND noninteractive
 # setup apt tools and other goodies we want
 RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common sudo scons screen && apt-get clean
 
-# do everything in root's home
-WORKDIR /root
+# set up user <this is for running soccer later on>
+# Replace 1000 with your user / group id
+RUN export uid=1000 gid=1000 && \
+    mkdir -p /home/developer && \
+    echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
+    echo "developer:x:${uid}:" >> /etc/group && \
+    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
+    chmod 0440 /etc/sudoers.d/developer && \
+    chown ${uid}:${gid} -R /home/developer
 
+USER developer
+ENV HOME /home/developer
+
+# clone and run ubuntu-setup to shave some time off. This will be run again in the robocup-software to compensate for changes to the setup script.
+
+# do everything in root's home
+WORKDIR /home/developer
 # clone repo
 RUN git clone git://github.com/RoboJackets/robocup-software
+#TODO make ubuntu-setup take a force yes argument
+RUN yes | robocup-software/util/ubuntu-setup && sudo apt-get clean
+# try to make dockerimages smaller
 
-
-# TEMPORARY fix for not including firmware toolchain in ubuntu-setup
+# TEMPORARY fix for not including firmware toolchain in ubunut-setup
 RUN sudo apt-get -y remove binutils-arm-none-eabi gcc-arm-none-eabi &&\
         sudo add-apt-repository ppa:terry.guo/gcc-arm-embedded &&\
         sudo apt-get update &&\
         sudo apt-get -y install gcc-arm-none-eabi
 
-
-#TODO make ubuntu-setup take a force yes argument
-RUN yes | robocup-software/util/ubuntu-setup && sudo apt-get clean
-# try to make dockerimages smaller
-
 # Do a baseline make to speed up future compiles
-WORKDIR /root/robocup-software
-RUN make && make test-cpp && make robot2015
+WORKDIR /home/developer/robocup-software
+RUN make && make robot2015 && make test-cpp
+
+# soccer needs to be run in current directory for some reason :/
+WORKDIR /home/developer/robocup-software/run
+
+CMD /home/developer/robocup-software/run/simulator & /home/developer/robocup-software/run/soccer -sim
 
