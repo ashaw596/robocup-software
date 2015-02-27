@@ -3,12 +3,18 @@ compiler: gcc
 
 submodules: false
 
+# All docker help comes from: https://github.com/jpetazzo/sekexe
+# A running example of sekexe is https://github.com/rocker-org/rocker/blob/56cb59cc262e9d2c02f9e11cfacab65f0b659c5f/.travis.yml#L10-L24
+
 # holds github oauth token so we can push compiled doxygen documentation
 # generated with: `travis encrypt 'GIT_USERNAME="justbuchanan" GIT_EMAIL="justbuchanan@gmail.com" GH_TOKEN=######################'`
 env:
   global:
-    secure: "L9gLcUuHMBnCeHIyecTAUR0C3FoS6HwyQzrYm50leQ4icxFNfusqDJcsOQGs9JrGucLxq8Oj+hcYJUXQLKT2iQLm0IWfji0/w5H9Ocy5GZDmw8xUvJOJjgGwKdndn+lgsvRkmTtBguz4Pyn2gkUlILKDoR4Jx6pQ4jxrJkVMEA0="
-
+    - secure: "L9gLcUuHMBnCeHIyecTAUR0C3FoS6HwyQzrYm50leQ4icxFNfusqDJcsOQGs9JrGucLxq8Oj+hcYJUXQLKT2iQLm0IWfji0/w5H9Ocy5GZDmw8xUvJOJjgGwKdndn+lgsvRkmTtBguz4Pyn2gkUlILKDoR4Jx6pQ4jxrJkVMEA0="
+    - "HOST_IP=$(/sbin/ifconfig venet0:0 | grep 'inet addr' | awk -F: '{print $2}' | awk '{print $1}')"
+    - DOCKER_HOST=tcp://$HOST_IP:2375
+    - DOCKER_PORT_RANGE=2400:2500
+    - SLIRP_PORTS=$(seq 2375 2500)
 
 before_install:
   # auto-update documentation site
@@ -16,8 +22,21 @@ before_install:
   - './util/travis-setup'
   - export CC=gcc-4.7
   - export CXX=g++-4.7
+  - sudo sh -c "wget -qO- https://get.docker.io/gpg | apt-key add -" # Add docker to system repos
+  - sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
+  - echo exit 101 | sudo tee /usr/sbin/policy-rc.d
+  - sudo chmod +x /usr/sbin/policy-rc.d
 
-script: make && make test-cpp && make robot2015
+before_script:
+  - "sekexe/run 'mount -t tmpfs -o size=8g tmpfs /var/lib/docker && docker -d -H tcp://0.0.0.0:2375' &"
+  - "while ! docker info &> /dev/null ; do sleep 1; done"
+
+script:
+  - docker version
+  - docker build -t robocup-travis util/docker/travis/
+
+# The make step is taken care of in the dockerimage
+# script: make && make test-cpp && make robot2015
 
 notifications:
   email: false
