@@ -4,7 +4,7 @@ function visualize(target_pos, actual_pos)
 dt = 0.01; % amount of time between successive points
 
 figure(1)
-pbaspect([1,2,1])   % square aspect ratio for display
+pbaspect([6,9,1])   % square aspect ratio for display
 title('Robot Trajectory-Tracking Animation')
 xlabel('FieldPos.x (meters)')
 ylabel('FieldPos.y (meters)')
@@ -13,7 +13,7 @@ hold on
 % draw black circle for robot
 bot_radius = 0.09;
 bot_loc = [1, 1]';
-rect = [bot_loc(1)-bot_radius, bot_loc(2)-bot_radius, bot_radius*2, bot_radius*2]
+rect = [bot_loc(1)-bot_radius, bot_loc(2)-bot_radius, bot_radius*2, bot_radius*2];
 robot = rectangle('Position', rect, 'Curvature', [1,1], 'FaceColor', 'k');
 
 % draw desired trajectory
@@ -32,7 +32,7 @@ for i = 1:n
 
     % Set to field dimensions
     % we do this at each iteration because MATLAB tries to adjust them to fit the data
-    axis([-2.5 2.5 0 10])
+    axis([-3 3 0 9])
     
     pause(dt);
 end
