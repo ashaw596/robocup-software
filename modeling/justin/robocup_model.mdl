@@ -1,5 +1,5 @@
 Model {
-  Name			  "robocup"
+  Name			  "robocup_model"
   Version		  8.4
   MdlSubVersion		  0
   SavedCharacterEncoding  "ISO-8859-1"
@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.8"
+    ComputedModelVersion    "1.12"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -29,7 +29,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [354.0, 214.0, 800.0, 522.0]
+      Location		      [559.0, 203.0, 800.0, 522.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -54,8 +54,8 @@ Model {
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
 	Extents			[766.0, 352.0]
-	ZoomFactor		[1.0]
-	Offset			[0.0, 0.0]
+	ZoomFactor		[1.25]
+	Offset			[66.2000000000001, 41.599999999999881]
       }
     }
   }
@@ -65,9 +65,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "justbuchanan"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Mar 11 04:00:05 2015"
-  RTWModifiedTimeStamp	  347946902
-  ModelVersionFormat	  "1.%<AutoIncrement:8>"
+  LastModifiedDate	  "Mon Mar 30 13:53:05 2015"
+  RTWModifiedTimeStamp	  349589697
+  ModelVersionFormat	  "1.%<AutoIncrement:12>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -789,91 +789,27 @@ Model {
   }
   BlockParameterDefaults {
     Block {
-      BlockType		      Demux
-      Outputs		      "4"
-      DisplayOption	      "none"
-      BusSelectionMode	      off
-    }
-    Block {
-      BlockType		      Inport
-      Port		      "1"
-      OutputFunctionCall      off
+      BlockType		      Constant
+      Value		      "1"
+      VectorParams1D	      on
+      SamplingMode	      "Sample based"
       OutMin		      "[]"
       OutMax		      "[]"
-      OutDataTypeStr	      "Inherit: auto"
+      OutDataTypeStr	      "Inherit: Inherit from 'Constant value'"
       LockScale		      off
-      BusOutputAsStruct	      off
-      PortDimensions	      "-1"
-      VarSizeSig	      "Inherit"
-      SampleTime	      "-1"
-      SignalType	      "auto"
-      SamplingMode	      "auto"
-      LatchByDelayingOutsideSignal off
-      LatchInputForFeedbackSignals off
-      Interpolate	      on
+      SampleTime	      "inf"
+      FramePeriod	      "inf"
+      PreserveConstantTs      off
     }
     Block {
-      BlockType		      Outport
-      Port		      "1"
-      OutMin		      "[]"
-      OutMax		      "[]"
-      OutDataTypeStr	      "Inherit: auto"
-      LockScale		      off
-      BusOutputAsStruct	      off
-      PortDimensions	      "-1"
-      VarSizeSig	      "Inherit"
-      SampleTime	      "-1"
-      SignalType	      "auto"
-      SamplingMode	      "auto"
-      SourceOfInitialOutputValue "Dialog"
-      OutputWhenDisabled      "held"
-      InitialOutput	      "[]"
-    }
-    Block {
-      BlockType		      S-Function
-      FunctionName	      "system"
-      SFunctionModules	      "''"
-      PortCounts	      "[]"
-      SFunctionDeploymentMode off
-    }
-    Block {
-      BlockType		      SubSystem
-      ShowPortLabels	      "FromPortIcon"
-      Permissions	      "ReadWrite"
-      PermitHierarchicalResolution "All"
-      TreatAsAtomicUnit	      off
-      MinAlgLoopOccurrences   off
-      PropExecContextOutsideSubsystem off
-      CheckFcnCallInpInsideContextMsg off
-      SystemSampleTime	      "-1"
-      RTWSystemCode	      "Auto"
-      RTWFcnNameOpts	      "Auto"
-      RTWFileNameOpts	      "Auto"
-      FunctionInterfaceSpec   "void_void"
-      FunctionWithSeparateData off
-      RTWMemSecFuncInitTerm   "Inherit from model"
-      RTWMemSecFuncExecute    "Inherit from model"
-      RTWMemSecDataConstants  "Inherit from model"
-      RTWMemSecDataInternal   "Inherit from model"
-      RTWMemSecDataParameters "Inherit from model"
-      SimViewingDevice	      off
-      DataTypeOverride	      "UseLocalSettings"
-      DataTypeOverrideAppliesTo	"AllNumericTypes"
-      MinMaxOverflowLogging   "UseLocalSettings"
-      Opaque		      off
-      MaskHideContents	      off
-      SFBlockType	      "NONE"
-      Variant		      off
-      GeneratePreprocessorConditionals off
-      ContentPreviewEnabled   off
-    }
-    Block {
-      BlockType		      Terminator
+      BlockType		      M-S-Function
+      FunctionName	      "matlabfile"
+      DisplayMFileStacktrace  on
     }
   }
   System {
-    Name		    "robocup"
-    Location		    [354, 214, 1154, 736]
+    Name		    "robocup_model"
+    Location		    [559, 203, 1359, 725]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -885,194 +821,38 @@ Model {
     TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
     TiledPageScale	    1
     ShowPageBoundaries	    off
-    ZoomFactor		    "100"
+    ZoomFactor		    "125"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "19"
+    SIDHighWatermark	    "26"
     Block {
-      BlockType		      Demux
-      Name		      "Demux"
-      SID		      "16"
-      Ports		      [1, 3]
-      Position		      [375, 141, 380, 179]
-      ZOrder		      18
-      Outputs		      "3"
-      DisplayOption	      "bar"
+      BlockType		      Constant
+      Name		      "Constant"
+      SID		      "22"
+      Position		      [175, 130, 205, 160]
+      ZOrder		      21
+      Value		      "[1 -1 -1 1]'"
     }
     Block {
-      BlockType		      SubSystem
-      Name		      "MATLAB Function"
-      SID		      "9"
-      Ports		      [1, 1]
-      Position		      [125, 112, 195, 158]
-      ZOrder		      11
-      LibraryVersion	      "1.32"
-      ErrorFcn		      "Stateflow.Translate.translate"
-      PermitHierarchicalResolution "ExplicitOnly"
-      TreatAsAtomicUnit	      on
-      RequestExecContextInheritance off
-      SFBlockType	      "MATLAB Function"
-      System {
-	Name			"MATLAB Function"
-	Location		[223, 338, 826, 833]
-	Open			off
-	ModelBrowserVisibility	off
-	ModelBrowserWidth	200
-	ScreenColor		"white"
-	PaperOrientation	"landscape"
-	PaperPositionMode	"auto"
-	PaperType		"usletter"
-	PaperUnits		"inches"
-	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
-	TiledPageScale		1
-	ShowPageBoundaries	off
-	ZoomFactor		"100"
-	SIDHighWatermark	"18"
-	Block {
-	  BlockType		  Inport
-	  Name			  "t"
-	  SID			  "9::1"
-	  Position		  [20, 101, 40, 119]
-	  ZOrder		  -1
-	  IconDisplay		  "Port number"
-	}
-	Block {
-	  BlockType		  Demux
-	  Name			  " Demux "
-	  SID			  "9::17"
-	  Ports			  [1, 1]
-	  Position		  [270, 230, 320, 270]
-	  ZOrder		  8
-	  Outputs		  "1"
-	}
-	Block {
-	  BlockType		  S-Function
-	  Name			  " SFunction "
-	  SID			  "9::16"
-	  Tag			  "Stateflow S-Function robocup 2"
-	  Ports			  [1, 2]
-	  Position		  [180, 100, 230, 160]
-	  ZOrder		  7
-	  FunctionName		  "sf_sfun"
-	  PortCounts		  "[1 2]"
-	  EnableBusSupport	  on
-	  Port {
-	    PortNumber		    2
-	    Name		    "y"
-	    RTWStorageClass	    "Auto"
-	    DataLoggingNameMode	    "SignalName"
-	  }
-	}
-	Block {
-	  BlockType		  Terminator
-	  Name			  " Terminator "
-	  SID			  "9::18"
-	  Position		  [460, 241, 480, 259]
-	  ZOrder		  9
-	}
-	Block {
-	  BlockType		  Outport
-	  Name			  "y"
-	  SID			  "9::5"
-	  Position		  [460, 101, 480, 119]
-	  ZOrder		  -5
-	  IconDisplay		  "Port number"
-	}
-	Line {
-	  ZOrder		  5
-	  SrcBlock		  "t"
-	  SrcPort		  1
-	  DstBlock		  " SFunction "
-	  DstPort		  1
-	}
-	Line {
-	  Name			  "y"
-	  ZOrder		  6
-	  Labels		  [0, 0]
-	  SrcBlock		  " SFunction "
-	  SrcPort		  2
-	  DstBlock		  "y"
-	  DstPort		  1
-	}
-	Line {
-	  ZOrder		  7
-	  SrcBlock		  " Demux "
-	  SrcPort		  1
-	  DstBlock		  " Terminator "
-	  DstPort		  1
-	}
-	Line {
-	  ZOrder		  8
-	  SrcBlock		  " SFunction "
-	  SrcPort		  1
-	  DstBlock		  " Demux "
-	  DstPort		  1
-	}
+      BlockType		      M-S-Function
+      Name		      "Level-2 MATLAB\nS-Function1"
+      SID		      "25"
+      Ports		      [1, 2]
+      Position		      [285, 96, 380, 194]
+      ZOrder		      24
+      FunctionName	      "robot_sfcn"
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		19
+	$ClassName		"Simulink.Mask"
+	Display			"port_label('input', 1, 'u')\n\nport_label('output', 1, 'x_g')\nport_label('output', 2, 'x_bot_dot')"
       }
     }
-    Block {
-      BlockType		      Reference
-      Name		      "Ramp"
-      SID		      "12"
-      Ports		      [0, 1]
-      Position		      [25, 125, 55, 155]
-      ZOrder		      14
-      LibraryVersion	      "1.354"
-      SourceBlock	      "simulink/Sources/Ramp"
-      SourceType	      "Ramp"
-      ContentPreviewEnabled   off
-      slope		      "1"
-      start		      "0"
-      X0		      "0"
-      VectorParams1D	      on
-    }
-    Block {
-      BlockType		      Reference
-      Name		      "XY Graph"
-      SID		      "14"
-      Ports		      [2]
-      Position		      [425, 145, 455, 180]
-      ZOrder		      16
-      LibraryVersion	      "1.354"
-      SourceBlock	      "simulink/Sinks/XY Graph"
-      SourceType	      "XY scope."
-      ContentPreviewEnabled   off
-      xmin		      "-1"
-      xmax		      "10"
-      ymin		      "-1"
-      ymax		      "10"
-      st		      "-1"
-    }
     Line {
-      ZOrder		      1
-      SrcBlock		      "Ramp"
+      ZOrder		      9
+      SrcBlock		      "Constant"
       SrcPort		      1
-      Points		      [50, 0]
-      DstBlock		      "MATLAB Function"
+      DstBlock		      "Level-2 MATLAB\nS-Function1"
       DstPort		      1
-    }
-    Line {
-      ZOrder		      4
-      SrcBlock		      "MATLAB Function"
-      SrcPort		      1
-      Points		      [85, 0; 0, 25]
-      DstBlock		      "Demux"
-      DstPort		      1
-    }
-    Line {
-      ZOrder		      5
-      SrcBlock		      "Demux"
-      SrcPort		      1
-      Points		      [25, 0]
-      DstBlock		      "XY Graph"
-      DstPort		      1
-    }
-    Line {
-      ZOrder		      6
-      SrcBlock		      "Demux"
-      SrcPort		      2
-      Points		      [18, 0; 0, 10]
-      DstBlock		      "XY Graph"
-      DstPort		      2
     }
   }
 }
@@ -1084,134 +864,14 @@ Model {
 Stateflow {
   machine {
     id			    1
-    name		    "robocup"
+    name		    "robocup_model"
     created		    "11-Mar-2015 01:21:21"
     isLibrary		    0
-    firstTarget		    9
+    firstTarget		    2
     sfVersion		    80000001
   }
-  chart {
-    id			    2
-    name		    "MATLAB Function"
-    windowPosition	    [422 539.941 189 413]
-    viewLimits		    [0 156.75 0 153.75]
-    screen		    [1 1 3600 1200 1.180555555555556]
-    treeNode		    [0 3 0 0]
-    firstTransition	    7
-    firstJunction	    6
-    viewObj		    2
-    visible		    1
-    machine		    1
-    subviewS {
-    }
-    ssIdHighWaterMark	    5
-    decomposition	    CLUSTER_CHART
-    type		    EML_CHART
-    firstData		    4
-    chartFileNumber	    2
-    disableImplicitCasting  1
-    eml {
-      name		      "fcn"
-    }
-  }
-  state {
-    id			    3
-    labelString		    "eML_blk_kernel()"
-    position		    [18 64.5 118 66]
-    fontSize		    12
-    chart		    2
-    treeNode		    [2 0 0 0]
-    superState		    SUBCHART
-    subviewer		    2
-    ssIdNumber		    1
-    type		    FUNC_STATE
-    decomposition	    CLUSTER_STATE
-    eml {
-      isEML		      1
-      script		      "function y = fcn(t)\ny = DiagonalPath(t)'\n"
-      editorLayout	      "100 M4x1[10 5 700 500]"
-    }
-  }
-  data {
-    id			    4
-    ssIdNumber		    4
-    name		    "t"
-    linkNode		    [2 0 5]
-    scope		    INPUT_DATA
-    machine		    1
-    props {
-      array {
-	size			"-1"
-      }
-      type {
-	method			SF_INHERITED_TYPE
-	primitive		SF_DOUBLE_TYPE
-      }
-      complexity	      SF_COMPLEX_INHERITED
-    }
-    dataType		    "Inherit: Same as Simulink"
-  }
-  data {
-    id			    5
-    ssIdNumber		    5
-    name		    "y"
-    linkNode		    [2 4 0]
-    scope		    OUTPUT_DATA
-    machine		    1
-    props {
-      array {
-	size			"-1"
-      }
-      type {
-	method			SF_INHERITED_TYPE
-	primitive		SF_DOUBLE_TYPE
-      }
-      complexity	      SF_COMPLEX_INHERITED
-      frame		      SF_FRAME_NO
-    }
-    dataType		    "Inherit: Same as Simulink"
-  }
-  junction {
-    id			    6
-    position		    [23.5747 49.5747 7]
-    chart		    2
-    linkNode		    [2 0 0]
-    subviewer		    2
-    ssIdNumber		    3
-    type		    CONNECTIVE_JUNCTION
-  }
-  transition {
-    id			    7
-    labelString		    "{eML_blk_kernel();}"
-    labelPosition	    [28.125 13.875 102.544 14.964]
-    fontSize		    12
-    src {
-      intersection	      [0 0 1 0 23.5747 14.625 0 0]
-    }
-    dst {
-      id		      6
-      intersection	      [1 0 -1 0 23.5747 42.5747 0 0]
-    }
-    midPoint		    [23.5747 24.9468]
-    chart		    2
-    linkNode		    [2 0 0]
-    dataLimits		    [21.175 25.975 14.625 42.575]
-    subviewer		    2
-    drawStyle		    SMART
-    slide {
-      sticky		      BOTH_STICK
-    }
-    executionOrder	    1
-    ssIdNumber		    2
-  }
-  instance {
-    id			    8
-    name		    "MATLAB Function"
-    machine		    1
-    chart		    2
-  }
   target {
-    id			    9
+    id			    2
     name		    "sfun"
     description		    "Default Simulink S-Function Target."
     machine		    1
