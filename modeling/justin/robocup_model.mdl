@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.12"
+    ComputedModelVersion    "1.13"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -29,7 +29,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [559.0, 203.0, 800.0, 522.0]
+      Location		      [368.0, 172.0, 800.0, 522.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -65,9 +65,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "justbuchanan"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Mon Mar 30 13:53:05 2015"
-  RTWModifiedTimeStamp	  349589697
-  ModelVersionFormat	  "1.%<AutoIncrement:12>"
+  LastModifiedDate	  "Tue Mar 31 18:35:44 2015"
+  RTWModifiedTimeStamp	  349727738
+  ModelVersionFormat	  "1.%<AutoIncrement:13>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -802,14 +802,14 @@ Model {
       PreserveConstantTs      off
     }
     Block {
-      BlockType		      M-S-Function
-      FunctionName	      "matlabfile"
-      DisplayMFileStacktrace  on
+      BlockType		      MATLABSystem
+      System		      "<Enter System Class Name>"
+      SimulateUsing	      "Code generation"
     }
   }
   System {
     Name		    "robocup_model"
-    Location		    [559, 203, 1359, 725]
+    Location		    [368, 172, 1168, 694]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -823,36 +823,61 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "125"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "26"
+    SIDHighWatermark	    "28"
     Block {
       BlockType		      Constant
       Name		      "Constant"
+      SID		      "28"
+      Position		      [175, 220, 205, 250]
+      ZOrder		      26
+      Value		      "1/60"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant\nVoltages"
       SID		      "22"
-      Position		      [175, 130, 205, 160]
+      Position		      [175, 125, 205, 155]
       ZOrder		      21
       Value		      "[1 -1 -1 1]'"
     }
     Block {
-      BlockType		      M-S-Function
-      Name		      "Level-2 MATLAB\nS-Function1"
-      SID		      "25"
-      Ports		      [1, 2]
-      Position		      [285, 96, 380, 194]
-      ZOrder		      24
-      FunctionName	      "robot_sfcn"
-      Object {
-	$PropName		"MaskObject"
-	$ObjectID		19
-	$ClassName		"Simulink.Mask"
-	Display			"port_label('input', 1, 'u')\n\nport_label('output', 1, 'x_g')\nport_label('output', 2, 'x_bot_dot')"
-      }
+      BlockType		      MATLABSystem
+      Name		      "MATLAB System"
+      SID		      "27"
+      Ports		      [2, 2]
+      Position		      [315, 118, 510, 202]
+      ZOrder		      25
+      System		      "Robot"
+      MaskType		      "Robot"
+      MaskDisplay	      "disp(['RoboCup Robot' char(10) 'Dynamics']);\nport_label('input',1,'Motor Voltages');\nport_l"
+      "abel('input',2,'dt');\nport_label('output',1,'Robot pose');\nport_label('output',2,'Robot velocity');\n"
+      M_bot		      "1"
+      I_bot		      "1"
+      g			      "2.0/7.0"
+      r			      "0.03"
+      L			      "0.1"
+      R			      "1"
+      K_e		      "1"
+      K_t		      "1"
+      K_f		      "1"
+      I_asm		      "1"
+      V			      "1"
+      wheel_angles	      "(pi/4 + (pi/2)*(0:3))'"
     }
     Line {
-      ZOrder		      9
+      ZOrder		      10
+      SrcBlock		      "Constant\nVoltages"
+      SrcPort		      1
+      DstBlock		      "MATLAB System"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      13
       SrcBlock		      "Constant"
       SrcPort		      1
-      DstBlock		      "Level-2 MATLAB\nS-Function1"
-      DstPort		      1
+      Points		      [31, 0; 0, -55]
+      DstBlock		      "MATLAB System"
+      DstPort		      2
     }
   }
 }
