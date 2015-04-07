@@ -117,17 +117,20 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon
         end
         
         function [X_b_dot, X_g] = stepImpl(obj, u, dt)
+            tspan = [0, dt];
+            [t, xa] = ode45(@f, tspan, [obj.X_g; obj.X_b_dot])
+
+            function dydt = f(t, y)
+                X_g = y(1:3);
+                X_b_dot = y(4:6);
+
+                X_b_dot_dot = obj.A_1*X_b_dot + obj.A_2*X_b_dot * ([0 0 1]*X_b_dot) + obj.B*u;
+                dydt = [X_b_dot; X_b_dot_dot];
+            end
             
-            syms X;
-            S = dsolve(diff(X) == obj.A_1*X+obj.A_2*X*([0 0 1]*X)+obj.B*u);
-            
-            % TODO
-            
-            obj.X_b_dot = [0 0 0]';
-            obj.X_g = [0 0 0]';
-            % TODO: this doesn't feel right
-            X_b_dot = obj.X_b_dot;
-            X_g = obj.X_g;
+            result = xa(end, :);
+            obj.X_g = result(1:3);
+            obj.X_b_dot = result(4:6);
         end
     end
     
