@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.13"
+    ComputedModelVersion    "1.16"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -65,9 +65,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "justbuchanan"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Mar 31 18:35:44 2015"
-  RTWModifiedTimeStamp	  349727738
-  ModelVersionFormat	  "1.%<AutoIncrement:13>"
+  LastModifiedDate	  "Tue Apr 07 19:34:50 2015"
+  RTWModifiedTimeStamp	  350336088
+  ModelVersionFormat	  "1.%<AutoIncrement:16>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -848,13 +848,14 @@ Model {
       Position		      [315, 118, 510, 202]
       ZOrder		      25
       System		      "Robot"
+      SimulateUsing	      "Interpreted execution"
       MaskType		      "Robot"
       MaskDisplay	      "disp(['RoboCup Robot' char(10) 'Dynamics']);\nport_label('input',1,'Motor Voltages');\nport_l"
       "abel('input',2,'dt');\nport_label('output',1,'Robot pose');\nport_label('output',2,'Robot velocity');\n"
       M_bot		      "1"
       I_bot		      "1"
       g			      "2.0/7.0"
-      r			      "0.03"
+      r			      "1"
       L			      "0.1"
       R			      "1"
       K_e		      "1"

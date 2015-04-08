@@ -2,7 +2,7 @@
 % This class models the dynamics of a single RoboCup SSL Robot
 % note: a good example of custom System blocks can be found at:
 % http://www.mathworks.com/help/simulink/ug/system-design-in-simulink-using-system-objects.html
-classdef Robot < matlab.System & matlab.system.mixin.CustomIcon
+classdef Robot < matlab.System & matlab.system.mixin.CustomIcon & matlab.system.mixin.Nondirect
     
     % The state of the robot is its global location and its body velocity
     properties (ContinuousState)
@@ -92,8 +92,16 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon
     
     
     methods (Access = protected)
-        % initialize at zero pose with zero velocity
-        function setupImpl(obj)
+
+        % indicate that the output doesn't depend on the input directly,
+        % only on the current state
+        function [flag1, flag2] = isInputDirectFeedthroughImpl(~, ~, ~)
+            flag1 = false;
+            flag2 = false;
+        end
+        
+        
+        function resetImpl(obj)
             obj.X_g = [0 0 0]';
             obj.X_b_dot = [0 0 0]';
         end
@@ -109,28 +117,34 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon
             num = 2;
         end
         
-        function validateInputsImpl(obj, u)
+        function [X_g, X_b_dot] = outputImpl(obj)
+           [X_g, X_b_dot] = obj.X_g, obj.X_b_dot; 
+        end
+        
+        function validateInputsImpl(~, u, dt)
             sz = size(u);
             if ~(sz(1) == 4 && sz(2) == 1)
                error('Wrong dimensions for input, should be [4, 1]') 
             end
+            
+            dt
+            
+            if dt < 0
+                error('dt must be positive')
+            end
         end
         
-        function [X_b_dot, X_g] = stepImpl(obj, u, dt)
+        function updateImpl(obj, u, dt)
             tspan = [0, dt];
-            [t, xa] = ode45(@f, tspan, [obj.X_g; obj.X_b_dot])
-
-            function dydt = f(t, y)
-                X_g = y(1:3);
-                X_b_dot = y(4:6);
-
-                X_b_dot_dot = obj.A_1*X_b_dot + obj.A_2*X_b_dot * ([0 0 1]*X_b_dot) + obj.B*u;
-                dydt = [X_b_dot; X_b_dot_dot];
-            end
+            options = odeset;
             
+%             [t, xa] = ode45(@f, tspan, x_b_dot_0, odeset, u)
+            
+            [t, xa] = ode45(@dydt, tspan, [obj.X_g; obj.X_b_dot], options, obj, u);
+% @(t,y)evalfcn(t,y,arg1,arg2,...)
             result = xa(end, :);
-            obj.X_g = result(1:3);
-            obj.X_b_dot = result(4:6);
+            X_g = result(1:3)';
+            X_b_dot = result(4:6)';
         end
     end
     
@@ -153,9 +167,8 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon
     % Custom name for the block in SimuLink
     methods (Access = protected)
         function icon = getIconImpl(~)
-            icon = sprintf('RoboCup Robot\nDynamics')
+            icon = sprintf('RoboCup Robot\nDynamics');
         end
     end
     
 end
-
