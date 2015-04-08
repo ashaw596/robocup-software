@@ -2,10 +2,13 @@
 % This class models the dynamics of a single RoboCup SSL Robot
 % note: a good example of custom System blocks can be found at:
 % http://www.mathworks.com/help/simulink/ug/system-design-in-simulink-using-system-objects.html
-classdef Robot < matlab.System & matlab.system.mixin.CustomIcon & matlab.system.mixin.Nondirect
+% TODO: why nondirect?
+% We inherit from the Propagates mixin because we need the ability to
+% specify the sizes of the outputs.
+classdef Robot < matlab.System & matlab.system.mixin.CustomIcon & matlab.system.mixin.Nondirect & matlab.system.mixin.Propagates
     
     % The state of the robot is its global location and its body velocity
-    properties (ContinuousState)
+    properties (DiscreteState)
         X_g;
         X_b_dot;
     end
@@ -117,9 +120,43 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon & matlab.system.
             num = 2;
         end
         
-        function [X_g, X_b_dot] = outputImpl(obj)
-           [X_g, X_b_dot] = obj.X_g, obj.X_b_dot; 
+        
+        function [sz_X_g, sz_X_b_dot] = getOutputSizeImpl(~)
+           sz_X_g = [3 1];
+           sz_X_b_dot = [3 1];
         end
+        
+        
+        function [flag1, flag2] = isOutputFixedSizeImpl(obj)
+            flag1 = true;
+            flag2 = true;
+        end
+        
+        
+        function [t1, t2] = getOutputDataTypeImpl(obj)
+            t1 = 'double';
+            t2 = 'double';
+        end
+        
+        
+        function [X_g, X_b_dot] = outputImpl(obj, ~, ~)
+           X_g = obj.X_g;
+           X_b_dot = obj.X_b_dot;
+        end
+        
+        
+        function [flag1, flag2] = isOutputComplexImpl(obj)
+            flag1 = false;
+            flag2 = false;
+        end
+        
+        
+        function [sz, dt, cp] = getDiscreteStateSpecificationImpl(obj, name)
+            sz = [3 1];
+            dt = 'double';
+            cp = false; % not complex
+        end
+        
         
         function validateInputsImpl(~, u, dt)
             sz = size(u);
