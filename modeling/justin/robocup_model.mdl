@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.16"
+    ComputedModelVersion    "1.18"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -29,7 +29,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [368.0, 172.0, 800.0, 522.0]
+      Location		      [30.0, 67.0, 850.0, 524.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -53,7 +53,7 @@ Model {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[766.0, 352.0]
+	Extents			[816.0, 354.0]
 	ZoomFactor		[1.25]
 	Offset			[66.2000000000001, 41.599999999999881]
       }
@@ -65,9 +65,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "justbuchanan"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Apr 07 19:34:50 2015"
-  RTWModifiedTimeStamp	  350336088
-  ModelVersionFormat	  "1.%<AutoIncrement:16>"
+  LastModifiedDate	  "Wed Apr 08 18:42:42 2015"
+  RTWModifiedTimeStamp	  350419358
+  ModelVersionFormat	  "1.%<AutoIncrement:18>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -718,7 +718,7 @@ Model {
       }
       Name		      "Configuration"
       CurrentDlgPage	      "Solver"
-      ConfigPrmDlgPosition     [ 180, 130, 1260, 770 ] 
+      ConfigPrmDlgPosition     [ 180, 108, 1260, 770 ] 
     }
     PropName		    "ConfigurationSets"
   }
@@ -802,6 +802,12 @@ Model {
       PreserveConstantTs      off
     }
     Block {
+      BlockType		      Demux
+      Outputs		      "4"
+      DisplayOption	      "none"
+      BusSelectionMode	      off
+    }
+    Block {
       BlockType		      MATLABSystem
       System		      "<Enter System Class Name>"
       SimulateUsing	      "Code generation"
@@ -809,7 +815,7 @@ Model {
   }
   System {
     Name		    "robocup_model"
-    Location		    [368, 172, 1168, 694]
+    Location		    [30, 67, 880, 591]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -823,14 +829,14 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "125"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "28"
+    SIDHighWatermark	    "32"
     Block {
       BlockType		      Constant
       Name		      "Constant"
       SID		      "28"
       Position		      [175, 220, 205, 250]
       ZOrder		      26
-      Value		      "1/60"
+      Value		      "1/60.0"
     }
     Block {
       BlockType		      Constant
@@ -839,6 +845,17 @@ Model {
       Position		      [175, 125, 205, 155]
       ZOrder		      21
       Value		      "[1 -1 -1 1]'"
+    }
+    Block {
+      BlockType		      Demux
+      Name		      "Demux"
+      SID		      "31"
+      Ports		      [1, 3]
+      Position		      [560, 141, 565, 179]
+      ZOrder		      29
+      ShowName		      off
+      Outputs		      "3"
+      DisplayOption	      "bar"
     }
     Block {
       BlockType		      MATLABSystem
@@ -865,6 +882,23 @@ Model {
       V			      "1"
       wheel_angles	      "(pi/4 + (pi/2)*(0:3))'"
     }
+    Block {
+      BlockType		      Reference
+      Name		      "XY Graph"
+      SID		      "29"
+      Ports		      [2]
+      Position		      [635, 140, 665, 175]
+      ZOrder		      27
+      LibraryVersion	      "1.354"
+      SourceBlock	      "simulink/Sinks/XY Graph"
+      SourceType	      "XY scope."
+      ContentPreviewEnabled   off
+      xmin		      "-1"
+      xmax		      "1"
+      ymin		      "-1"
+      ymax		      "1"
+      st		      "-1"
+    }
     Line {
       ZOrder		      10
       SrcBlock		      "Constant\nVoltages"
@@ -878,6 +912,29 @@ Model {
       SrcPort		      1
       Points		      [31, 0; 0, -55]
       DstBlock		      "MATLAB System"
+      DstPort		      2
+    }
+    Line {
+      ZOrder		      14
+      SrcBlock		      "MATLAB System"
+      SrcPort		      1
+      Points		      [20, 0; 0, 20]
+      DstBlock		      "Demux"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      15
+      SrcBlock		      "Demux"
+      SrcPort		      1
+      DstBlock		      "XY Graph"
+      DstPort		      1
+    }
+    Line {
+      ZOrder		      16
+      SrcBlock		      "Demux"
+      SrcPort		      2
+      Points		      [30, 0; 0, 5]
+      DstBlock		      "XY Graph"
       DstPort		      2
     }
   }

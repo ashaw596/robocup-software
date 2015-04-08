@@ -1,10 +1,5 @@
 function deriv = dydt(t, y, obj, u)
 
-
-
-
-y = [1 2 3 4 5 6]';
-
 X_g = y(1:3);
 X_b_dot = y(4:6);
 

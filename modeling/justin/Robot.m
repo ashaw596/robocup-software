@@ -164,7 +164,7 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon & matlab.system.
                error('Wrong dimensions for input, should be [4, 1]') 
             end
             
-            dt
+            dt;
             
             if dt < 0
                 error('dt must be positive')
@@ -178,10 +178,19 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon & matlab.system.
 %             [t, xa] = ode45(@f, tspan, x_b_dot_0, odeset, u)
             
             [t, xa] = ode45(@dydt, tspan, [obj.X_g; obj.X_b_dot], options, obj, u);
+            
+            xa;
+            
+            dt;
+            
 % @(t,y)evalfcn(t,y,arg1,arg2,...)
             result = xa(end, :);
-            X_g = result(1:3)';
-            X_b_dot = result(4:6)';
+            obj.X_g = result(1:3)';
+            obj.X_b_dot = result(4:6)';
+            
+            
+            obj.X_b_dot
+            obj.X_g;
         end
     end
     
