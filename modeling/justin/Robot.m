@@ -177,7 +177,7 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon & matlab.system.
             
 %             [t, xa] = ode45(@f, tspan, x_b_dot_0, odeset, u)
             
-            [t, xa] = ode45(@dydt, tspan, [obj.X_g; obj.X_b_dot], options, obj, u);
+            [t, xa] = ode45(@calculate_bot_accel, tspan, [obj.X_g; obj.X_b_dot], options, obj, u);
             
             xa;
             
@@ -217,4 +217,25 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon & matlab.system.
         end
     end
     
+end
+
+
+
+
+
+% calculate X_b_dot_dot, the acceleration in the body frame
+function accel = calculate_bot_accel(t, y, obj, u)
+
+    X_g = y(1:3);
+    X_b_dot = y(4:6);
+
+    phi = X_g(3);
+    gbR = [cos(phi), -sin(phi), 0;
+           sin(phi),  cos(phi), 0;
+                  0,         0, 1];
+
+    dPhiDt = [0 0 1]*X_b_dot;
+
+    X_b_dot_dot = obj.A_1*X_b_dot + obj.A_2*X_b_dot*dPhiDt + obj.B*u;
+    accel = [gbR*X_b_dot; X_b_dot_dot];
 end

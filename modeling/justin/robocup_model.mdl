@@ -7,7 +7,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.18"
+    ComputedModelVersion    "1.19"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -29,7 +29,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [30.0, 67.0, 850.0, 524.0]
+      Location		      [0.0, 23.0, 1345.0, 814.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -53,9 +53,9 @@ Model {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[816.0, 354.0]
+	Extents			[1311.0, 644.0]
 	ZoomFactor		[1.25]
-	Offset			[66.2000000000001, 41.599999999999881]
+	Offset			[-287.50476190475956, -46.042857142856349]
       }
     }
   }
@@ -65,9 +65,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "justbuchanan"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Apr 08 18:42:42 2015"
-  RTWModifiedTimeStamp	  350419358
-  ModelVersionFormat	  "1.%<AutoIncrement:18>"
+  LastModifiedDate	  "Wed Apr 08 19:08:09 2015"
+  RTWModifiedTimeStamp	  350420857
+  ModelVersionFormat	  "1.%<AutoIncrement:19>"
   ConfigurationManager	  "none"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -812,10 +812,28 @@ Model {
       System		      "<Enter System Class Name>"
       SimulateUsing	      "Code generation"
     }
+    Block {
+      BlockType		      Scope
+      ModelBased	      off
+      TickLabels	      "OneTimeTick"
+      ZoomMode		      "on"
+      Grid		      "on"
+      TimeRange		      "auto"
+      YMin		      "-5"
+      YMax		      "5"
+      SaveToWorkspace	      off
+      SaveName		      "ScopeData"
+      DataFormat	      "Array"
+      LimitDataPoints	      on
+      MaxDataPoints	      "5000"
+      Decimation	      "1"
+      SampleInput	      off
+      SampleTime	      "-1"
+    }
   }
   System {
     Name		    "robocup_model"
-    Location		    [30, 67, 880, 591]
+    Location		    [0, 23, 1345, 837]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -829,7 +847,7 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "125"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "32"
+    SIDHighWatermark	    "33"
     Block {
       BlockType		      Constant
       Name		      "Constant"
@@ -844,7 +862,7 @@ Model {
       SID		      "22"
       Position		      [175, 125, 205, 155]
       ZOrder		      21
-      Value		      "[1 -1 -1 1]'"
+      Value		      "[-1 -1 -1 -1]'"
     }
     Block {
       BlockType		      Demux
@@ -881,6 +899,34 @@ Model {
       I_asm		      "1"
       V			      "1"
       wheel_angles	      "(pi/4 + (pi/2)*(0:3))'"
+    }
+    Block {
+      BlockType		      Scope
+      Name		      "Theta scope"
+      SID		      "33"
+      Ports		      [1]
+      Position		      [625, 234, 655, 266]
+      ZOrder		      31
+      Floating		      off
+      Location		      [573, 236, 1119, 718]
+      Open		      on
+      NumInputPorts	      "1"
+      List {
+	ListType		AxesTitles
+	axes1			"%<SignalLabel>"
+      }
+      List {
+	ListType		ScopeGraphics
+	FigureColor		"[0.5 0.5 0.5]"
+	AxesColor		"[0 0 0]"
+	AxesTickColor		"[1 1 1]"
+	LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
+	LineStyles		"-|-|-|-|-|-"
+	LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
+	MarkerStyles		"none|none|none|none|none|none"
+      }
+      ShowLegends	      off
+      ScrollMode	      off
     }
     Block {
       BlockType		      Reference
@@ -936,6 +982,14 @@ Model {
       Points		      [30, 0; 0, 5]
       DstBlock		      "XY Graph"
       DstPort		      2
+    }
+    Line {
+      ZOrder		      18
+      SrcBlock		      "Demux"
+      SrcPort		      3
+      Points		      [25, 0; 0, 80]
+      DstBlock		      "Theta scope"
+      DstPort		      1
     }
   }
 }
