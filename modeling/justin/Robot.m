@@ -213,12 +213,12 @@ classdef Robot < matlab.System & matlab.system.mixin.CustomIcon & matlab.system.
     % Custom name for the block in SimuLink
     methods (Access = protected)
         function icon = getIconImpl(~)
+%             image(imread('robot_render.jpg'))
             icon = sprintf('RoboCup Robot\nDynamics');
         end
     end
     
 end
-
 
 
 
